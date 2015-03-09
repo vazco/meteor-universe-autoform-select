@@ -1,0 +1,31 @@
+<template name="afUniverseSelect">
+    <div class="selectize-control multi plugin-remove_button">
+
+        <select {{this.atts}} class="universeSelectValue">
+            {{#each this.items}}
+                <option {{optionAtts}}>{{this.label}}</option>
+            {{/each}}
+        </select>
+
+
+        <div class="selectize-input items not-full has-options has-items">
+            {{#each getItemsSelected}}
+                <div data-value={{this.value}} class="item">
+                    {{this.label}}
+                    <a href="#" class="remove" tabindex="-1" title="Remove">×</a>
+                </div>
+            {{/each}}
+            <input type="text" autocomplete="off" tabindex="" style="width: 4px; opacity: 1; position: relative; left: 0px;">
+        </div>
+
+        {{#if getItemsUnselected}}
+            <div class="selectize-dropdown multi demo-default" style="width:100%;">
+                <div class="selectize-dropdown-content">
+                    {{#each getItemsUnselected}}
+                        <div data-value={{this.value}} data-selectable class="option">{{this.label}}</div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+    </div>
+</template>
