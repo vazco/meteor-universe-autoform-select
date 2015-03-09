@@ -1,7 +1,7 @@
 <template name="afUniverseSelect">
-    <div class="selectize-control multi plugin-remove_button">
+    <div class="selectize-control {{this.atts.multipleClass}} {{this.atts.remove_button}}">
 
-        <select {{this.atts}} class="universeSelectValue">
+        <select {{this.atts}} class="hide">
             {{#each this.items}}
                 <option {{optionAtts}}>{{this.label}}</option>
             {{/each}}
@@ -12,20 +12,27 @@
             {{#each getItemsSelected}}
                 <div data-value={{this.value}} class="item">
                     {{this.label}}
-                    <a href="#" class="remove" tabindex="-1" title="Remove">×</a>
+
+                    {{#if atts.remove_button}}
+                        <a href="#" class="remove" tabindex="-1" title="Remove">×</a>
+                    {{/if}}
                 </div>
             {{/each}}
             <input type="text" autocomplete="off" tabindex="" style="width: 4px; opacity: 1; position: relative; left: 0px;">
         </div>
 
-        {{#if getItemsUnselected}}
-            <div class="selectize-dropdown multi demo-default" style="width:100%;">
-                <div class="selectize-dropdown-content">
-                    {{#each getItemsUnselected}}
-                        <div data-value={{this.value}} data-selectable class="option">{{this.label}}</div>
-                    {{/each}}
+
+        <div class="selectize-dropdown demo-default js-selectize-dropdown" style="width:100%;display:none;">
+            <div class="selectize-dropdown-content">
+                {{#each getItemsUnselected}}
+                    <div data-value={{this.value}} data-selectable class="option">
+                        {{this.label}}
+                    </div>
+                {{/each}}
+                <div data-selectable="" class="create" style="display:none;">
+                    Add <strong></strong>…
                 </div>
             </div>
-        {{/if}}
+        </div>
     </div>
 </template>
