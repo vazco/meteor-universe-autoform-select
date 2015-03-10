@@ -1,16 +1,18 @@
 Package.describe({
-    name: 'vazco:autoform-universe-select',
-    summary: 'Custom "select" input type for AutoForm',
+    name: 'vazco:universe-autoform-select',
+    summary: 'Custom "afUniverseSelect" input type for AutoForm',
     version: '0.0.1',
     git: 'https://github.com/vazco/meteor-universe-autoform-select.git'
 });
 
 Package.onUse(function(api) {
-    api.versionsFrom(['METEOR@1.0']);
+    api.use('templating@1.0.0');
+    api.use('blaze@2.0.0');
+    api.use('aldeed:autoform@4.0.0');/*('aldeed:autoform@4.0.0 || 5.0.0');*/
 
-    api.use(['underscore', 'templating', 'ui', 'blaze', 'reactive-var', 'reactive-dict'], 'client');
+    api.use(['underscore', 'reactive-var'], 'client');
 
-    api.use('aldeed:autoform');
+
     api.addFiles([
         'universe-autoform-select.html',
         'universe-autoform-select.js',

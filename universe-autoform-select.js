@@ -16,15 +16,20 @@ AutoForm.addInputType("universe-select", {
             };
         });
 
+        if(context.atts.remove_button === false){
+            context.atts.remove_button = "";
+        } else {
+            context.atts.remove_button = "plugin-remove_button";
+        }
+
         if(context.atts.multiple){
             context.atts.multipleClass = "multi";
-            context.atts.remove_button = "plugin-remove_button";
         }else{
             context.atts.multiple = undefined;
             context.atts.multipleClass = "single";
             context.atts.remove_button = "";
         }
-
+        
         return context;
     }
 });
@@ -103,6 +108,7 @@ Template.afUniverseSelect.helpers({
 
 Template.afUniverseSelect.events({
     'click .remove': function (e, template) {
+        e.preventDefault();
         var el = $(e.target);
         var val = el.parent().attr('data-value');
         var values = template.vazcoSelect.values.get();
@@ -111,6 +117,7 @@ Template.afUniverseSelect.events({
         _saveValues(template, values);
     },
     'click .selectize-dropdown-content > div': function (e, template) {
+        e.preventDefault();
         var el = $(e.target);
         var val = el.attr('data-value');
         var values = template.vazcoSelect.values.get();

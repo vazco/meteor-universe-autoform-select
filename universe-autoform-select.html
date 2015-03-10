@@ -1,9 +1,9 @@
 <template name="afUniverseSelect">
-    <div class="selectize-control {{this.atts.multipleClass}} {{this.atts.remove_button}}">
+    <div class="selectize-control {{atts.multipleClass}} {{atts.remove_button}}">
 
-        <select {{this.atts}} class="hide">
+        <select {{atts}} class="hide">
             {{#each this.items}}
-                <option {{optionAtts}}>{{this.label}}</option>
+                <option {{optionAtts}}>{{label}}</option>
             {{/each}}
         </select>
 
@@ -13,7 +13,7 @@
                 <div data-value={{this.value}} class="item">
                     {{this.label}}
 
-                    {{#if atts.remove_button}}
+                    {{#if ../atts.remove_button}}
                         <a href="#" class="remove" tabindex="-1" title="Remove">×</a>
                     {{/if}}
                 </div>
