@@ -1,7 +1,9 @@
+'use strict';
+
 Package.describe({
     name: 'vazco:universe-autoform-select',
     summary: 'Custom "afUniverseSelect" input type for AutoForm',
-    version: '0.0.1',
+    version: '0.0.2',
     git: 'https://github.com/vazco/meteor-universe-autoform-select.git'
 });
 

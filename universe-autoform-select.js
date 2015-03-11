@@ -1,9 +1,7 @@
 'use strict';
 
-var selectItems2;
-
-AutoForm.addInputType("universe-select", {
-    template: "afUniverseSelect",
+AutoForm.addInputType('universe-select', {
+    template: 'afUniverseSelect',
     valueIsArray: true,
     valueOut: function () {
         return this.val();
@@ -19,17 +17,17 @@ AutoForm.addInputType("universe-select", {
         });
 
         if(context.atts.remove_button === false){
-            context.atts.remove_button = "";
+            context.atts.remove_button = '';
         } else {
-            context.atts.remove_button = "plugin-remove_button";
+            context.atts.remove_button = 'plugin-remove_button';
         }
 
         if(context.atts.multiple){
-            context.atts.multipleClass = "multi";
+            context.atts.multipleClass = 'multi';
         }else{
             context.atts.multiple = undefined;
-            context.atts.multipleClass = "single";
-            context.atts.remove_button = "";
+            context.atts.multipleClass = 'single';
+            context.atts.remove_button = '';
         }
 
         // get autosave value
@@ -51,7 +49,7 @@ Template.afUniverseSelect.created = function () {
     template.vazcoSelect.items = new ReactiveVar();
     template.vazcoSelect.values = new ReactiveVar();
     template.vazcoSelect.reactive = new ReactiveVar(true);
-}
+};
 
 Template.afUniverseSelect.rendered = function () {
     var template = this, prevVal;
@@ -59,7 +57,6 @@ Template.afUniverseSelect.rendered = function () {
     template.autorun(function () {
         var data = Template.currentData();
         var values = [];
-        var el = $(template.find('select'));
 
         _.each(data.items, function (item) {
             item.visible = true;
@@ -70,10 +67,11 @@ Template.afUniverseSelect.rendered = function () {
 
 
         // fix for non-reactive value if autosave is false
-        if(template.vazcoSelect.reactive.get() && (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
-            template.vazcoSelect.values.set(values);
-            template.vazcoSelect.items.set(data.items);
-            prevVal = values;
+        if(template.vazcoSelect.reactive.get() &&
+           (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
+                template.vazcoSelect.values.set(values);
+                template.vazcoSelect.items.set(data.items);
+                prevVal = values;
         }
     });
 
@@ -192,7 +190,7 @@ Template.afUniverseSelect.events({
         }
 
         _.each(items, function (item, key) {
-            if(item.label.search(new RegExp(value,"i")) !== -1){
+            if(item.label.search(new RegExp(value,'i')) !== -1){
                 items[key].visible = true;
             }else{
                 items[key].visible = false;
@@ -209,7 +207,6 @@ Template.afUniverseSelect.events({
         $(template.find('.js-selectize-dropdown')).hide(500);
     },
     'click .create': function (e, template) {
-        var el = $(e.target);
         var $input = $(template.find('input'));
         var items = template.vazcoSelect.items.get();
         var values = template.vazcoSelect.values.get();
@@ -243,7 +240,7 @@ Template.afUniverseSelect.events({
             }
 
             _saveValues(template, values);
-        }
+        };
 
         $input.val('');
         $(template.find('.create')).hide();
@@ -270,7 +267,7 @@ var _saveValues = function (template, values) {
     if (!_.isEqual($select.val(), values)) {
         $select.val(values).change();
     }
-}
+};
 
 
 
