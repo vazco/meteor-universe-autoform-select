@@ -2,7 +2,7 @@
     <div class="selectize-control {{atts.multipleClass}} {{atts.remove_button}}">
 
         <select {{atts}} class="hide">
-            {{#each this.items}}
+            {{#each getItems}}
                 <option {{optionAtts}}>{{label}}</option>
             {{/each}}
         </select>
@@ -29,9 +29,11 @@
                         {{this.label}}
                     </div>
                 {{/each}}
-                <div data-selectable="" class="create" style="display:none;">
-                    Add <strong></strong>…
-                </div>
+                {{#if atts.create}}
+                    <div data-selectable="" class="create" style="display:none;">
+                        Add <strong></strong>…
+                    </div>
+                {{/if}}
             </div>
         </div>
     </div>

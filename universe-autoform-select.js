@@ -1,5 +1,7 @@
 'use strict';
 
+var selectItems2;
+
 AutoForm.addInputType("universe-select", {
     template: "afUniverseSelect",
     valueIsArray: true,
@@ -29,7 +31,16 @@ AutoForm.addInputType("universe-select", {
             context.atts.multipleClass = "single";
             context.atts.remove_button = "";
         }
-        
+
+        // get autosave value
+        var i=0;
+        while(Template.parentData(i) !== undefined && !Template.parentData(i)._af){
+            i++;
+        }
+        if(Template.parentData(i)._af){
+            context.autosave = Template.parentData(i)._af.autosave;
+        }
+
         return context;
     }
 });
@@ -39,10 +50,11 @@ Template.afUniverseSelect.created = function () {
     template.vazcoSelect = {};
     template.vazcoSelect.items = new ReactiveVar();
     template.vazcoSelect.values = new ReactiveVar();
+    template.vazcoSelect.reactive = new ReactiveVar(true);
 }
 
 Template.afUniverseSelect.rendered = function () {
-    var template = this;
+    var template = this, prevVal;
 
     template.autorun(function () {
         var data = Template.currentData();
@@ -56,16 +68,21 @@ Template.afUniverseSelect.rendered = function () {
             }
         });
 
-        template.vazcoSelect.values.set(values);
-        template.vazcoSelect.items.set(data.items);
+
+        // fix for non-reactive value if autosave is false
+        if(template.vazcoSelect.reactive.get() && (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
+            template.vazcoSelect.values.set(values);
+            template.vazcoSelect.items.set(data.items);
+            prevVal = values;
+        }
     });
 
     template.autorun(function () {
         var values = template.vazcoSelect.values.get();
-        var input = $(template.find('select'));
+        var $select = $(template.find('select'));
 
-        if (!_.isEqual(input.val(), values)) {
-            input.val(values);
+        if (!_.isEqual($select.val(), values)) {
+            $select.val(values);
         }
     });
 };
@@ -80,28 +97,35 @@ Template.afUniverseSelect.helpers({
 
         return atts;
     },
+    getItems: function () {
+        var template = Template.instance();
+        var items = template.vazcoSelect.items.get();
+
+        return items;
+    },
     getItemsSelected: function () {
         var template = Template.instance();
+        var selectItems = template.vazcoSelect.items.get();
         var items = [];
-        if(template.vazcoSelect){
-            _.each(template.vazcoSelect.items.get(), function (item) {
-                if(item.selected){
-                    items.push(item);
-                }
-            });
-        }
+
+        _.each(selectItems, function (item) {
+            if (item.selected) {
+                items.push(item);
+            }
+        });
+
         return items;
     },
     getItemsUnselected: function () {
         var template = Template.instance();
         var items = [];
-        if(template.vazcoSelect){
-            _.each(template.vazcoSelect.items.get(), function (item) {
-                if(!item.selected && item.visible){
-                    items.push(item);
-                }
-            });
-        }
+
+        _.each(template.vazcoSelect.items.get(), function (item) {
+            if(!item.selected && item.visible){
+                items.push(item);
+            }
+        });
+
         return items;
     }
 });
@@ -116,7 +140,7 @@ Template.afUniverseSelect.events({
         values = _.without(values, val);
         _saveValues(template, values);
     },
-    'click .selectize-dropdown-content > div': function (e, template) {
+    'click .selectize-dropdown-content > div:not(.create)': function (e, template) {
         e.preventDefault();
         var el = $(e.target);
         var val = el.attr('data-value');
@@ -187,6 +211,40 @@ Template.afUniverseSelect.events({
     'click .create': function (e, template) {
         var el = $(e.target);
         var $input = $(template.find('input'));
+        var items = template.vazcoSelect.items.get();
+        var values = template.vazcoSelect.values.get();
+        var val = $input.val();
+
+        template.vazcoSelect.reactive.set(false);
+
+        if(_.indexOf(values, val) === -1) {
+            items.push({
+                label: val,
+                value: val,
+                selected: true,
+                visible: false
+            });
+            template.vazcoSelect.items.set(items);
+
+            if (template.data.atts.createMethod) {
+                Meteor.call(template.data.atts.createMethod, val, val, function () {
+                    _saveCreatedItem();
+                });
+            } else {
+                _saveCreatedItem();
+            }
+        }
+
+        var _saveCreatedItem = function () {
+            if (template.data.atts.multiple) {
+                values = _.union(values, val);
+            } else {
+                values = val;
+            }
+
+            _saveValues(template, values);
+        }
+
         $input.val('');
         $(template.find('.create')).hide();
     }
@@ -195,11 +253,22 @@ Template.afUniverseSelect.events({
 
 
 var _saveValues = function (template, values) {
-    var input = $(template.find('select'));
+    var $select = $(template.find('select'));
+    var items = template.vazcoSelect.items.get();
+
+    _.each(items, function (item, key) {
+        if(_.indexOf(values, item.value) !== -1){
+            items[key].selected = true;
+        }else{
+            items[key].selected = false;
+        }
+    });
+
+    template.vazcoSelect.items.set(items);
     template.vazcoSelect.values.set(values);
 
-    if (!_.isEqual(input.val(), values)) {
-        input.val(values).change();
+    if (!_.isEqual($select.val(), values)) {
+        $select.val(values).change();
     }
 }
 
