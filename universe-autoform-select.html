@@ -1,7 +1,7 @@
 <template name="afUniverseSelect">
     <div class="selectize-control universe-autoform-select {{atts.multipleClass}} {{atts.remove_button}}">
 
-        <select {{atts}} class="hide">
+        <select {{atts}}>
             {{#each getItems}}
                 <option {{optionAtts}}>{{label}}</option>
             {{/each}}
@@ -18,7 +18,7 @@
                     {{/if}}
                 </div>
             {{/each}}
-            <input type="text" autocomplete="off" tabindex="" style="width: 4px; opacity: 1; position: relative; left: 0px;">
+            <input type="text" autocomplete="off" tabindex="">
         </div>
 
 

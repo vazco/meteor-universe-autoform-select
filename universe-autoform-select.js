@@ -74,7 +74,6 @@ Template.afUniverseSelect.rendered = function () {
            (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
                 template.universeSelect.values.set(values);
                 template.universeSelect.items.set(data.items);
-                prevVal = values;
         }
     });
 
@@ -85,6 +84,8 @@ Template.afUniverseSelect.rendered = function () {
         if (!_.isEqual($select.val(), values)) {
             $select.val(values);
         }
+
+        prevVal = values;
     });
 };
 
@@ -268,8 +269,13 @@ var _universeSelectOnBlur = function (e, template) {
 }
 
 var _universeSelectOnChangedItems = function (template) {
-    var height = $(template.find('.selectize-dropdown-content')).height();
-    $(template.find('.selectize-dropdown')).height(height);
+    var heightDropdown = $(template.find('.selectize-dropdown-content')).outerHeight();
+    var heightInput = $(template.find('.selectize-input')).outerHeight();
+
+    $(template.find('.selectize-dropdown')).css({
+        height: heightDropdown,
+        top: heightInput
+    });
 }
 
 
