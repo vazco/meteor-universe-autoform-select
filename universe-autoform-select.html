@@ -1,5 +1,5 @@
 <template name="afUniverseSelect">
-    <div class="selectize-control {{atts.multipleClass}} {{atts.remove_button}}">
+    <div class="selectize-control universe-autoform-select {{atts.multipleClass}} {{atts.remove_button}}">
 
         <select {{atts}} class="hide">
             {{#each getItems}}
@@ -22,7 +22,7 @@
         </div>
 
 
-        <div class="selectize-dropdown demo-default js-selectize-dropdown" style="width:100%;display:none;">
+        <div class="selectize-dropdown js-selectize-dropdown" style="display:none;">
             <div class="selectize-dropdown-content">
                 {{#each getItemsUnselected}}
                     <div data-value={{this.value}} data-selectable class="option">
