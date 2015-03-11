@@ -103,7 +103,7 @@ Or on the `afFieldInput` component or any component that passes along attributes
     </tr>
     <tr>
         <td valign="top"><code>createMethod</code></td>
-        <td valign="top"><i>Optional. Name of method to call after create new item</i> </td>
+        <td valign="top"><i>Optional. Name of method to call after create new item. Value is slug of label.</i> </td>
         <td valign="top"><code>function (label, value)</code></td>
         <td valign="top"><code>undefined</code></td>
     </tr>

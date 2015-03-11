@@ -217,21 +217,22 @@ Template.afUniverseSelect.events({
         var $input = $(template.find('input'));
         var items = template.universeSelect.items.get();
         var values = template.universeSelect.values.get();
-        var val = $input.val();
+        var label = $input.val();
+        var value = _.str.slugify(label);
 
         template.universeSelect.reactive.set(false);
 
-        if(_.indexOf(values, val) === -1) {
+        if(_.indexOf(values, value) === -1) {
             items.push({
-                label: val,
-                value: val,
+                label: label,
+                value: value,
                 selected: true,
                 visible: false
             });
             template.universeSelect.items.set(items);
 
             if (template.data.atts.createMethod) {
-                Meteor.call(template.data.atts.createMethod, val, val, function () {
+                Meteor.call(template.data.atts.createMethod, label, value, function () {
                     _saveCreatedItem();
                 });
             } else {
@@ -241,9 +242,9 @@ Template.afUniverseSelect.events({
 
         var _saveCreatedItem = function () {
             if (template.data.atts.multiple) {
-                values = _.union(values, val);
+                values = _.union(values, value);
             } else {
-                values = val;
+                values = value;
             }
 
             _saveValues(template, values);
