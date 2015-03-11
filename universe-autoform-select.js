@@ -32,11 +32,14 @@ AutoForm.addInputType('universe-select', {
 
         // get autosave value
         var i=0;
-        while(Template.parentData(i) !== undefined && !Template.parentData(i)._af){
+        while(Template.parentData(i) && !Template.parentData(i)._af){
             i++;
         }
-        if(Template.parentData(i)._af){
+        if(Template.parentData(i) && Template.parentData(i)._af){
             context.autosave = Template.parentData(i)._af.autosave;
+        } else {
+            console.log('autosave is undefined -- fixme');
+            context.autosave = true;
         }
 
         return context;
