@@ -81,7 +81,7 @@ Or on the `afFieldInput` component or any component that passes along attributes
 		<td valign="top"><code>multiple</code></td>
 		<td valign="top"><i>Optional.</i> </td>
 		<td valign="top"><code>Boolean</code></td>
-		<td valign="top"><code>undefined</code></td>
+		<td valign="top"><code>false</code></td>
 	</tr>
 	<tr>
         <td valign="top"><code>remove_button</code></td>
