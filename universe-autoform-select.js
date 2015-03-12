@@ -295,7 +295,9 @@ var _saveValues = function (template, values) {
     template.universeSelect.values.set(values);
 
     if (!_.isEqual($select.val(), values)) {
-        $select.val(values).change();
+        Meteor.defer(function () {
+            $select.val(values).change();
+        });
     }
 };
 
