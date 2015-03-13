@@ -3,6 +3,10 @@ vazco:universe-autoform-select
 
 An add-on Meteor package for [aldeed:autoform](https://github.com/aldeed/meteor-autoform). Provides a single custom input type, "universe-select".
 
+## Demo
+http://universe-autoform-select-demo.meteor.com
+
+
 ## Prerequisites
 
 The plugin library must be installed separately.
@@ -107,6 +111,11 @@ Or on the `afFieldInput` component or any component that passes along attributes
         <td valign="top"><code>function (label, value)</code></td>
         <td valign="top"><code>undefined</code></td>
     </tr>
-            
+    <tr>
+        <td valign="top"><code>optionsMethod</code></td>
+        <td valign="top"><i>Optional. Name of method to get more items. Value is slug of label.</i> </td>
+        <td valign="top"><code>function (query)</code></td>
+        <td valign="top"><code>undefined</code></td>
+    </tr>
 </table>
 

@@ -16,12 +16,14 @@ AutoForm.addInputType('universe-select', {
             };
         });
 
+        // remove_button option
         if(context.atts.remove_button === false){
             context.atts.remove_button = '';
         } else {
             context.atts.remove_button = 'plugin-remove_button';
         }
 
+        // multiple option
         if(context.atts.multiple){
             context.atts.multipleClass = 'multi';
         }else{
