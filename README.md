@@ -1,4 +1,4 @@
-Universe autoform select (vazco:universe-autoform-select)
+Universe autoform select
 =========================
 
 An add-on Meteor package for [aldeed:autoform](https://github.com/aldeed/meteor-autoform). Provides a single custom input type, "universe-select".
