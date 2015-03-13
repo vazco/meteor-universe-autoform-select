@@ -176,9 +176,9 @@ Template.afUniverseSelect.events({
     },
     'keydown input': function (e, template) {
         var el = $(e.target);
-        var $input = $(template.find('input'));
         var values = template.universeSelect.values.get();
         var width = _measureString(el.val(), el) + 10;
+        var $input = $(template.find('input'));
         var $unselectedItems = $(template.findAll('.selectize-dropdown-content > div:not(.create)'));
         var $createItem = $(template.find('.selectize-dropdown-content > div.create'));
         el.width(width);
@@ -200,13 +200,12 @@ Template.afUniverseSelect.events({
                     break;
                 }
 
-                if($unselectedItems.length === 1){
+                if($unselectedItems.length === 1) {
                     $unselectedItems.first().trigger('click');
-
-                }else{
-                    if(template.data.atts.create){
-                        $createItem.trigger('click');
-                    }
+                    $input.val('');
+                } else if (template.data.atts.create) {
+                    $createItem.trigger('click');
+                    $input.val('');
                 }
 
                 break;

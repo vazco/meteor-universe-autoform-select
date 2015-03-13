@@ -6,6 +6,8 @@ An add-on Meteor package for [aldeed:autoform](https://github.com/aldeed/meteor-
 ## Demo
 http://universe-autoform-select-demo.meteor.com
 
+https://github.com/vazco/meteor-universe-autoform-select-demo.git
+
 
 ## Prerequisites
 
@@ -54,6 +56,10 @@ Or on the `afFieldInput` component or any component that passes along attributes
 
 {{> afFieldInput name="tags" type="universe-select" multiple=true}}
 ```
+
+## Autosave
+
+If you enable autosave option in autoform, then it triggering after blur of universe-select (if multiple).
 
 ## Options
 
