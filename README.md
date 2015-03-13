@@ -3,6 +3,9 @@ Universe autoform select
 
 An add-on Meteor package for [aldeed:autoform](https://github.com/aldeed/meteor-autoform). Provides a single custom input type, "universe-select".
 
+> This package is part of Universe, a framework based on Meteor platform maintained by Vazco.
+> It works standalone, but you can get max out of it when using the whole system.
+
 ## Demo
 http://universe-autoform-select-demo.meteor.com
 
