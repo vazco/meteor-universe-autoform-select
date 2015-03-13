@@ -52,6 +52,7 @@ Template.afUniverseSelect.created = function () {
     template.universeSelect.items = new ReactiveVar();
     template.universeSelect.values = new ReactiveVar();
     template.universeSelect.reactive = new ReactiveVar(true);
+    template.universeSelect.blurTimeoutId = new ReactiveVar();
 };
 
 Template.afUniverseSelect.rendered = function () {
@@ -128,6 +129,7 @@ Template.afUniverseSelect.helpers({
             }
         });
 
+        // Height adjustment after adding items to the template
         Meteor.defer(function () {
             _universeSelectOnChangedItems(template);
         });
@@ -172,16 +174,39 @@ Template.afUniverseSelect.events({
     },
     'keydown input': function (e, template) {
         var el = $(e.target);
+        var $input = $(template.find('input'));
         var values = template.universeSelect.values.get();
         var width = _measureString(el.val(), el) + 10;
+        var $unselectedItems = $(template.findAll('.selectize-dropdown-content > div:not(.create)'));
+        var $createItem = $(template.find('.selectize-dropdown-content > div.create'));
         el.width(width);
 
         switch (e.keyCode) {
-            case 8:
+            case 8: // backspace
                 if(el.val() === '') {
                     values.pop();
                     _saveValues(template, values);
                 }
+                break;
+
+            case 27: // escape
+                $input.blur();
+                break;
+
+            case 13: // enter
+                if($input.val() === ''){
+                    break;
+                }
+
+                if($unselectedItems.length === 1){
+                    $unselectedItems.first().trigger('click');
+
+                }else{
+                    if(template.data.atts.create){
+                        $createItem.trigger('click');
+                    }
+                }
+
                 break;
         }
     },
@@ -209,10 +234,18 @@ Template.afUniverseSelect.events({
 
     },
     'focus input': function (e, template) {
+        var timeoutId = template.universeSelect.blurTimeoutId.get();
+        if (timeoutId) {
+            Meteor.clearTimeout(timeoutId);
+        }
+
         _universeSelectOnFocus(e, template);
     },
     'blur input': function (e, template) {
-        _universeSelectOnBlur(e, template);
+        var timeoutId = Meteor.setTimeout(function () {
+            _universeSelectOnBlur(e, template);
+        }, 500);
+        template.universeSelect.blurTimeoutId.set(timeoutId);
     },
     'click .create': function (e, template) {
         var $input = $(template.find('input'));
@@ -261,12 +294,19 @@ var _universeSelectOnFocus = function (e, template) {
     $(template.find('.js-selectize-dropdown')).stop(true, true).show();
     $(template.find('.selectize-input')).addClass('focus input-active dropdown-active');
     _universeSelectOnChangedItems(template);
-}
+};
 
 var _universeSelectOnBlur = function (e, template) {
-    $(template.find('.js-selectize-dropdown')).stop(true, true).hide(500);
-    $(template.find('.selectize-input')).removeClass('focus input-active dropdown-active');
-}
+    var $select = $(template.find('select'));
+    var $selectizeInput = $(template.find('.selectize-input'));
+    var $selectizeDropdown =  $(template.find('.js-selectize-dropdown'));
+
+
+    $select.change(); //save value on blur
+
+    $selectizeDropdown.stop(true, true).hide(500);
+    $selectizeInput.removeClass('focus input-active dropdown-active');
+};
 
 var _universeSelectOnChangedItems = function (template) {
     var heightDropdown = $(template.find('.selectize-dropdown-content')).outerHeight();
@@ -276,7 +316,7 @@ var _universeSelectOnChangedItems = function (template) {
         height: heightDropdown,
         top: heightInput
     });
-}
+};
 
 
 var _saveValues = function (template, values) {
@@ -295,9 +335,7 @@ var _saveValues = function (template, values) {
     template.universeSelect.values.set(values);
 
     if (!_.isEqual($select.val(), values)) {
-        Meteor.defer(function () {
-            $select.val(values).change();
-        });
+        $select.val(values);
     }
 };
 
