@@ -164,6 +164,8 @@ Template.afUniverseSelect.events({
 
         _saveValues(template, values);
 
+        $(template.find('input')).val('');
+
         if(template.data.atts.multiple) {
             $(template.find('.js-selectize-dropdown')).stop(true, true).show();
             $(template.find('input')).focus();
