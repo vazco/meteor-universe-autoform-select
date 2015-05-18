@@ -327,6 +327,10 @@ var _saveValues = function (template, values) {
     var $select = $(template.find('select'));
     var items = template.universeSelect.items.get();
 
+    if(!_.isArray(values)){
+        values = [values];
+    }
+
     _.each(items, function (item, key) {
         if(_.indexOf(values, item.value) !== -1){
             items[key].selected = true;
