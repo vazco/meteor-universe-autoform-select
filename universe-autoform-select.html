@@ -1,5 +1,5 @@
 <template name="afUniverseSelect">
-    <div class="selectize-control universe-autoform-select {{atts.multipleClass}} {{atts.remove_button}}">
+    <div class="selectize-control universe-autoform-select {{atts.multipleClass}} {{atts.remove_button}} {{#if isLoading}}loading{{/if}}">
 
         <select {{atts}}>
             {{#each getItems}}

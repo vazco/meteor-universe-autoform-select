@@ -55,30 +55,36 @@ Template.afUniverseSelect.created = function () {
     template.universeSelect.values = new ReactiveVar();
     template.universeSelect.reactive = new ReactiveVar(true);
     template.universeSelect.blurTimeoutId = new ReactiveVar();
+    template.universeSelect.loading = new ReactiveVar(false);
 };
 
 Template.afUniverseSelect.rendered = function () {
     var template = this, prevVal;
+    var optionsMethod = template.data.atts.optionsMethod;
 
-    template.autorun(function () {
-        var data = Template.currentData();
-        var values = [];
+    if(optionsMethod){
+        _getOptionsFromMethod(null, template);
+    } else {
+        template.autorun(function () {
+            var data = Template.currentData();
+            var values = [];
 
-        _.each(data.items, function (item) {
-            item.visible = true;
-            if (item.selected) {
-                values.push(item.value);
-            }
-        });
+            _.each(data.items, function (item) {
+                item.visible = true;
+                if (item.selected) {
+                    values.push(item.value);
+                }
+            });
 
 
-        // fix for non-reactive value if autosave is false
-        if(template.universeSelect.reactive.get() &&
-           (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
+            // fix for non-reactive value if autosave is false
+            if (template.universeSelect.reactive.get() &&
+                (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
                 template.universeSelect.values.set(values);
                 template.universeSelect.items.set(data.items);
-        }
-    });
+            }
+        });
+    }
 
     template.autorun(function () {
         var values = template.universeSelect.values.get();
@@ -137,6 +143,10 @@ Template.afUniverseSelect.helpers({
         });
 
         return items;
+    },
+    isLoading: function () {
+        var template = Template.instance();
+        return template.universeSelect.loading.get();
     }
 });
 
@@ -165,6 +175,7 @@ Template.afUniverseSelect.events({
         _saveValues(template, values);
 
         $(template.find('input')).val('');
+        _setVisibleByValue('', template);
 
         if(template.data.atts.multiple) {
             $(template.find('.js-selectize-dropdown')).stop(true, true).show();
@@ -174,7 +185,10 @@ Template.afUniverseSelect.events({
         }
     },
     'click .selectize-input': function (e, template) {
-        $(template.find('input')).focus();
+        var $input = $(template.find('input'));
+        $input.focus();
+
+        _getOptionsFromMethod($input.val(), template);
     },
     'keydown input': function (e, template) {
         var el = $(e.target);
@@ -217,7 +231,7 @@ Template.afUniverseSelect.events({
     'keyup input': function (e, template) {
         var el = $(e.target);
         var value = el.val();
-        var items = template.universeSelect.items.get();
+
 
         if(value){
             $(template.find('.create')).show();
@@ -226,16 +240,9 @@ Template.afUniverseSelect.events({
             $(template.find('.create')).hide();
         }
 
-        _.each(items, function (item, key) {
-            if(item.label.search(new RegExp(value,'i')) !== -1){
-                items[key].visible = true;
-            }else{
-                items[key].visible = false;
-            }
-        });
+        _setVisibleByValue(value, template);
 
-        template.universeSelect.items.set(items);
-
+        _getOptionsFromMethod(value, template);
     },
     'focus input': function (e, template) {
         var timeoutId = template.universeSelect.blurTimeoutId.get();
@@ -243,7 +250,7 @@ Template.afUniverseSelect.events({
             Meteor.clearTimeout(timeoutId);
         }
 
-        _universeSelectOnFocus(e, template);
+        _universeSelectOnFocus(template);
     },
     'blur input': function (e, template) {
         var timeoutId = Meteor.setTimeout(function () {
@@ -294,7 +301,7 @@ Template.afUniverseSelect.events({
     }
 });
 
-var _universeSelectOnFocus = function (e, template) {
+var _universeSelectOnFocus = function (template) {
     $(template.find('.js-selectize-dropdown')).stop(true, true).show();
     $(template.find('.selectize-input')).addClass('focus input-active dropdown-active');
     _universeSelectOnChangedItems(template);
@@ -390,4 +397,46 @@ var _transferStyles = function($from, $to, properties) {
         styles = $from.css();
     }
     $to.css(styles);
+};
+
+var _setVisibleByValue = function (value, template) {
+    var items = template.universeSelect.items.get();
+    _.each(items, function (item, key) {
+        if (item.label.search(new RegExp(value, 'i')) !== -1) {
+            items[key].visible = true;
+        } else {
+            items[key].visible = false;
+        }
+    });
+    template.universeSelect.items.set(items);
+};
+
+var _getOptionsFromMethod = function (searchText, template) {
+    var optionsMethod = template.data.atts.optionsMethod;
+
+    if(!optionsMethod){
+        return false;
+    }
+
+    template.universeSelect.loading.set(true);
+    Meteor.call(optionsMethod, searchText, function (err, res) {
+        var items = template.universeSelect.items.get() || [];
+
+        _.each(res, function (obj) {
+            if(_.find(items, function (item) { return item.value === obj.value; })){
+                return;
+            }
+
+            items.push({
+                label: obj.label,
+                value: obj.value,
+                selected: false,
+                visible: true
+            });
+        });
+
+        template.universeSelect.items.set(items);
+        template.universeSelect.loading.set(false);
+        _setVisibleByValue(searchText, template);
+    });
 };

@@ -1,3 +1,7 @@
+.universe-autoform-select{
+    position: relative;
+}
+
 .universe-autoform-select select {
     display: none;
 }
@@ -12,4 +16,15 @@
 .universe-autoform-select .selectize-dropdown{
     width: 100%!important;
     top: 36px;
+}
+
+.universe-autoform-select.loading:after{
+    content: "";
+    width: 16px;
+    height: 16px;
+    background: url('http://www.ajaxload.info/images/exemples/28.gif') no-repeat;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1000;
 }
