@@ -22,7 +22,7 @@
     content: "";
     width: 16px;
     height: 16px;
-    background: url('http://www.ajaxload.info/images/exemples/28.gif') no-repeat;
+    background: url('/packages/vazco_universe-autoform-select/img/loading.gif') no-repeat;
     position: absolute;
     top: 5px;
     right: 5px;

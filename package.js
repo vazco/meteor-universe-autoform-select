@@ -3,7 +3,7 @@
 Package.describe({
     name: 'vazco:universe-autoform-select',
     summary: 'Custom "afUniverseSelect" input type for AutoForm, with the appearance as selectize',
-    version: '0.1.0',
+    version: '0.1.1',
     git: 'https://github.com/vazco/meteor-universe-autoform-select.git'
 });
 
@@ -21,4 +21,6 @@ Package.onUse(function(api) {
         'stylesheets/selectize.default.css',
         'stylesheets/universe-autoform-select.css'
     ], 'client');
+
+    api.addFiles('img/loading.gif', ['client'], {isAsset: true});
 });
