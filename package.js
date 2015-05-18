@@ -13,7 +13,7 @@ Package.onUse(function(api) {
     api.use('templating');
     api.use('aldeed:autoform@4.0.0 || 5.0.0');
 
-    api.use(['underscore', 'wizonesolutions:underscore-string', 'reactive-var', 'less'], 'client');
+    api.use(['underscore', 'wizonesolutions:underscore-string@1.0.0', 'reactive-var', 'less'], 'client');
 
     api.addFiles([
         'universe-autoform-select.html',
