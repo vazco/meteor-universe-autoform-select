@@ -339,7 +339,7 @@ var _saveValues = function (template, values) {
     }
 
     _.each(items, function (item, key) {
-        if(_.indexOf(values, item.value) !== -1){
+        if(_.indexOf(values, item.value.toString()) !== -1){
             items[key].selected = true;
         }else{
             items[key].selected = false;
