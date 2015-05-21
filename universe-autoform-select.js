@@ -42,7 +42,6 @@ AutoForm.addInputType('universe-select', {
         if (Template.parentData(i) && Template.parentData(i)._af) {
             context.autosave = Template.parentData(i)._af.autosave;
         } else {
-            console.log('autosave is undefined -- fixme');
             context.autosave = true;
         }
 
@@ -67,7 +66,16 @@ Template.afUniverseSelect.onRendered(function () {
     var optionsMethod = template.data.atts.optionsMethod;
 
     if (optionsMethod) {
-        _getOptionsFromMethod(null, template);
+        template.autorun(function () {
+            var data = Template.currentData();
+
+            _getOptionsFromMethod(null, data.value, template, function (items) {
+                _.each(items, function (item) {
+                    item.selected = _.indexOf(data.value, item.value) !== -1;
+                });
+            });
+            template.universeSelect.values.set(data.value);
+        });
     } else {
         template.autorun(function () {
             var data = Template.currentData();
@@ -196,7 +204,7 @@ Template.afUniverseSelect.events({
         var $input = $(template.find('input'));
         $input.focus();
 
-        _getOptionsFromMethod($input.val(), template);
+        _getOptionsFromMethod($input.val(), null, template);
     },
     'keydown input': function (e, template) {
         var $el = $(e.target);
@@ -253,7 +261,7 @@ Template.afUniverseSelect.events({
 
         _setVisibleByValue(value, template);
 
-        _getOptionsFromMethod(value, template);
+        _getOptionsFromMethod(value, null, template);
     },
     'focus input': function (e, template) {
         var timeoutId = template.universeSelect.blurTimeoutId.get();
@@ -324,7 +332,7 @@ var _universeSelectOnFocus = function (template) {
 var _universeSelectOnBlur = function (e, template) {
     var $select = $(template.find('select'));
     var $selectizeInput = $(template.find('.selectize-input'));
-    var $selectizeDropdown =  $(template.find('.js-selectize-dropdown'));
+    var $selectizeDropdown = $(template.find('.js-selectize-dropdown'));
 
 
     $select.change(); //save value on blur
@@ -426,7 +434,7 @@ var _setVisibleByValue = function (value, template) {
     template.universeSelect.items.set(items);
 };
 
-var _getOptionsFromMethod = function (searchText, template) {
+var _getOptionsFromMethod = function (searchText, values, template, callback) {
     var optionsMethod = template.data.atts.optionsMethod;
     var optionsMethodParams = template.data.atts.optionsMethodParams;
     var searchVal;
@@ -435,15 +443,11 @@ var _getOptionsFromMethod = function (searchText, template) {
         return false;
     }
 
-    if (optionsMethodParams) {
-        searchVal = {
-            searchText: searchText,
-            params: optionsMethodParams
-        };
-
-    } else {
-        searchVal = searchText;
-    }
+    searchVal = {
+        searchText: searchText,
+        values: values || [],
+        params: optionsMethodParams || null
+    };
 
     template.universeSelect.loading.set(true);
 
@@ -451,7 +455,9 @@ var _getOptionsFromMethod = function (searchText, template) {
         var items = template.universeSelect.items.get() || [];
 
         _.each(res, function (obj) {
-            if (_.find(items, function (item) { return item.value === obj.value; })) {
+            if (_.find(items, function (item) {
+                    return item.value === obj.value;
+                })) {
                 return;
             }
 
@@ -466,5 +472,7 @@ var _getOptionsFromMethod = function (searchText, template) {
         template.universeSelect.items.set(items);
         template.universeSelect.loading.set(false);
         _setVisibleByValue(searchText, template);
+
+        callback && callback(items);
     });
 };
