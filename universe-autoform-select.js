@@ -8,7 +8,7 @@ AutoForm.addInputType('universe-select', {
     },
     contextAdjust: function (context) {
         // build items list
-        context.items = _.map(context.selectOptions, function(opt) {
+        context.items = _.map(context.selectOptions, function (opt) {
             return {
                 label: opt.label,
                 value: opt.value,
@@ -17,27 +17,29 @@ AutoForm.addInputType('universe-select', {
         });
 
         // remove_button option
-        if(context.atts.remove_button === false){
+        if (context.atts.remove_button === false) {
             context.atts.remove_button = '';
         } else {
             context.atts.remove_button = 'plugin-remove_button';
         }
 
         // multiple option
-        if(context.atts.multiple){
+        if (context.atts.multiple) {
             context.atts.multipleClass = 'multi';
-        }else{
+        } else {
             context.atts.multiple = undefined;
             context.atts.multipleClass = 'single';
             context.atts.remove_button = '';
         }
 
         // get autosave value
-        var i=0;
-        while(Template.parentData(i) && !Template.parentData(i)._af){
-            i++;
+        var i = 0;
+
+        while (Template.parentData(i) && !Template.parentData(i)._af) {
+            ++i;
         }
-        if(Template.parentData(i) && Template.parentData(i)._af){
+
+        if (Template.parentData(i) && Template.parentData(i)._af) {
             context.autosave = Template.parentData(i)._af.autosave;
         } else {
             console.log('autosave is undefined -- fixme');
@@ -48,21 +50,23 @@ AutoForm.addInputType('universe-select', {
     }
 });
 
-Template.afUniverseSelect.created = function () {
+Template.afUniverseSelect.onCreated(function () {
     var template = this;
+
     template.universeSelect = {};
     template.universeSelect.items = new ReactiveVar();
     template.universeSelect.values = new ReactiveVar();
     template.universeSelect.reactive = new ReactiveVar(true);
     template.universeSelect.blurTimeoutId = new ReactiveVar();
     template.universeSelect.loading = new ReactiveVar(false);
-};
+});
 
-Template.afUniverseSelect.rendered = function () {
-    var template = this, prevVal;
+Template.afUniverseSelect.onRendered(function () {
+    var template = this;
+    var prevVal;
     var optionsMethod = template.data.atts.optionsMethod;
 
-    if(optionsMethod){
+    if (optionsMethod) {
         _getOptionsFromMethod(null, template);
     } else {
         template.autorun(function () {
@@ -71,15 +75,16 @@ Template.afUniverseSelect.rendered = function () {
 
             _.each(data.items, function (item) {
                 item.visible = true;
+
                 if (item.selected) {
                     values.push(item.value);
                 }
             });
 
-
             // fix for non-reactive value if autosave is false
             if (template.universeSelect.reactive.get() &&
                 (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
+
                 template.universeSelect.values.set(values);
                 template.universeSelect.items.set(data.items);
             }
@@ -96,7 +101,7 @@ Template.afUniverseSelect.rendered = function () {
 
         prevVal = values;
     });
-};
+});
 
 
 Template.afUniverseSelect.helpers({
@@ -132,7 +137,7 @@ Template.afUniverseSelect.helpers({
         var items = [];
 
         _.each(template.universeSelect.items.get(), function (item) {
-            if(!item.selected && item.visible){
+            if (!item.selected && item.visible) {
                 items.push(item);
             }
         });
@@ -153,22 +158,25 @@ Template.afUniverseSelect.helpers({
 Template.afUniverseSelect.events({
     'click .remove': function (e, template) {
         e.preventDefault();
-        var el = $(e.target);
-        var val = el.parent().attr('data-value');
+
+        var $el = $(e.target);
+        var val = $el.parent().attr('data-value');
         var values = template.universeSelect.values.get();
 
         values = _.without(values, val);
+
         _saveValues(template, values);
     },
     'click .selectize-dropdown-content > div:not(.create)': function (e, template) {
         e.preventDefault();
-        var el = $(e.target);
-        var val = el.attr('data-value');
+
+        var $el = $(e.target);
+        var val = $el.attr('data-value');
         var values = template.universeSelect.values.get();
 
-        if(template.data.atts.multiple){
+        if (template.data.atts.multiple) {
             values = _.union(values, val);
-        }else{
+        } else {
             values = val;
         }
 
@@ -177,10 +185,10 @@ Template.afUniverseSelect.events({
         $(template.find('input')).val('');
         _setVisibleByValue('', template);
 
-        if(template.data.atts.multiple) {
+        if (template.data.atts.multiple) {
             $(template.find('.js-selectize-dropdown')).stop(true, true).show();
             $(template.find('input')).focus();
-        }else{
+        } else {
             $(template.find('.js-selectize-dropdown')).stop(true, true).hide();
         }
     },
@@ -191,20 +199,22 @@ Template.afUniverseSelect.events({
         _getOptionsFromMethod($input.val(), template);
     },
     'keydown input': function (e, template) {
-        var el = $(e.target);
+        var $el = $(e.target);
         var values = template.universeSelect.values.get();
-        var width = _measureString(el.val(), el) + 10;
+        var width = _measureString($el.val(), $el) + 10;
         var $input = $(template.find('input'));
         var $unselectedItems = $(template.findAll('.selectize-dropdown-content > div:not(.create)'));
         var $createItem = $(template.find('.selectize-dropdown-content > div.create'));
-        el.width(width);
+
+        $el.width(width);
 
         switch (e.keyCode) {
             case 8: // backspace
-                if(el.val() === '') {
+                if ($el.val() === '') {
                     values.pop();
                     _saveValues(template, values);
                 }
+
                 break;
 
             case 27: // escape
@@ -213,11 +223,12 @@ Template.afUniverseSelect.events({
 
             case 13: // enter
                 e.preventDefault();
-                if($input.val() === ''){
+
+                if ($input.val() === '') {
                     break;
                 }
 
-                if($unselectedItems.length === 1) {
+                if ($unselectedItems.length === 1) {
                     $unselectedItems.first().trigger('click');
                     $input.val('');
                 } else if (template.data.atts.create) {
@@ -229,14 +240,14 @@ Template.afUniverseSelect.events({
         }
     },
     'keyup input': function (e, template) {
-        var el = $(e.target);
-        var value = el.val();
+        var $el = $(e.target);
+        var value = $el.val();
 
 
-        if(value){
+        if (value) {
             $(template.find('.create')).show();
             $(template.find('.create strong')).text(value);
-        }else{
+        } else {
             $(template.find('.create')).hide();
         }
 
@@ -246,6 +257,7 @@ Template.afUniverseSelect.events({
     },
     'focus input': function (e, template) {
         var timeoutId = template.universeSelect.blurTimeoutId.get();
+
         if (timeoutId) {
             Meteor.clearTimeout(timeoutId);
         }
@@ -256,6 +268,7 @@ Template.afUniverseSelect.events({
         var timeoutId = Meteor.setTimeout(function () {
             _universeSelectOnBlur(e, template);
         }, 500);
+
         template.universeSelect.blurTimeoutId.set(timeoutId);
     },
     'click .create': function (e, template) {
@@ -267,13 +280,14 @@ Template.afUniverseSelect.events({
 
         template.universeSelect.reactive.set(false);
 
-        if(_.indexOf(values, value) === -1) {
+        if (_.indexOf(values, value) === -1) {
             items.push({
                 label: label,
                 value: value,
                 selected: true,
                 visible: false
             });
+
             template.universeSelect.items.set(items);
 
             if (template.data.atts.createMethod) {
@@ -334,14 +348,14 @@ var _saveValues = function (template, values) {
     var $select = $(template.find('select'));
     var items = template.universeSelect.items.get();
 
-    if(!_.isArray(values)){
+    if (!_.isArray(values)) {
         values = [values];
     }
 
     _.each(items, function (item, key) {
-        if(_.indexOf(values, item.value.toString()) !== -1){
+        if (_.indexOf(values, item.value.toString()) !== -1) {
             items[key].selected = true;
-        }else{
+        } else {
             items[key].selected = false;
         }
     });
@@ -354,12 +368,9 @@ var _saveValues = function (template, values) {
     }
 };
 
-
-
-
 // from selectize utils https://github.com/brianreavis/selectize.js/blob/master/src/utils.js
 
-var _measureString = function(str, $parent) {
+var _measureString = function (str, $parent) {
     if (!str) {
         return 0;
     }
@@ -387,8 +398,9 @@ var _measureString = function(str, $parent) {
     return width;
 };
 
-var _transferStyles = function($from, $to, properties) {
+var _transferStyles = function ($from, $to, properties) {
     var i, n, styles = {};
+
     if (properties) {
         for (i = 0, n = properties.length; i < n; i++) {
             styles[properties[i]] = $from.css(properties[i]);
@@ -396,11 +408,13 @@ var _transferStyles = function($from, $to, properties) {
     } else {
         styles = $from.css();
     }
+
     $to.css(styles);
 };
 
 var _setVisibleByValue = function (value, template) {
     var items = template.universeSelect.items.get();
+
     _.each(items, function (item, key) {
         if (item.label.search(new RegExp(value, 'i')) !== -1) {
             items[key].visible = true;
@@ -408,22 +422,36 @@ var _setVisibleByValue = function (value, template) {
             items[key].visible = false;
         }
     });
+
     template.universeSelect.items.set(items);
 };
 
 var _getOptionsFromMethod = function (searchText, template) {
     var optionsMethod = template.data.atts.optionsMethod;
+    var optionsMethodParams = template.data.atts.optionsMethodParams;
+    var searchVal;
 
-    if(!optionsMethod){
+    if (!optionsMethod) {
         return false;
     }
 
+    if (optionsMethodParams) {
+        searchVal = {
+            searchText: searchText,
+            params: optionsMethodParams
+        };
+
+    } else {
+        searchVal = searchText;
+    }
+
     template.universeSelect.loading.set(true);
-    Meteor.call(optionsMethod, searchText, function (err, res) {
+
+    Meteor.call(optionsMethod, searchVal, function (err, res) {
         var items = template.universeSelect.items.get() || [];
 
         _.each(res, function (obj) {
-            if(_.find(items, function (item) { return item.value === obj.value; })){
+            if (_.find(items, function (item) { return item.value === obj.value; })) {
                 return;
             }
 
