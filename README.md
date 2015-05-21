@@ -128,5 +128,30 @@ If you enable autosave option in autoform, then it triggering after blur of univ
         <td valign="top"><code>function (query)</code></td>
         <td valign="top"><code>undefined</code></td>
     </tr>
+    <tr>
+        <td valign="top"><code>optionsMethodParams</code></td>
+        <td valign="top"><i>Optional. Additional params for optionsMethod.</i> </td>
+        <td valign="top"><code>Object</code></td>
+        <td valign="top"><code>undefined</code></td>
+    </tr>
 </table>
 
+
+## Example optionsMethod:
+
+```js
+Meteor.methods({
+    getOptions: function (options) {
+        this.unblock();
+        var searchText = options.searchText;
+        var values = options.values;
+        
+        if (searchText) {
+            return OptionsCollection.find({label: {$regex: searchText}}, {limit: 5}).fetch();
+        } else if (values.length) {
+            return OptionsCollection.find({value: {$in: values}}).fetch();
+        }
+        return OptionsCollection.find({}, {limit: 5}).fetch();
+    }
+});
+```
