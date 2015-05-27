@@ -461,7 +461,7 @@ var _getOptionsFromMethod = function (searchText, values, template) {
             if(values && _.indexOf(values, item.value) !== -1){
                 item.selected = true;
                 items_selected.push(item);
-            } else if(!values && item.selected){
+            } else if(values === null && item.selected){
                 items_selected.push(item);
             }
         });
