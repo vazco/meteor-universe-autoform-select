@@ -69,35 +69,37 @@ Template.afUniverseSelect.onRendered(function () {
         template.autorun(function () {
             var data = Template.currentData();
 
-            _getOptionsFromMethod(null, data.value, template, function (items) {
-                _.each(items, function (item) {
-                    item.selected = _.indexOf(data.value, item.value) !== -1;
-                });
-            });
-            template.universeSelect.values.set(data.value);
+            _getOptionsFromMethod(null, data.value, template);
         });
     } else {
         template.autorun(function () {
             var data = Template.currentData();
-            var values = [];
 
             _.each(data.items, function (item) {
                 item.visible = true;
-
-                if (item.selected) {
-                    values.push(item.value);
-                }
             });
 
             // fix for non-reactive value if autosave is false
             if (template.universeSelect.reactive.get() &&
                 (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
 
-                template.universeSelect.values.set(values);
                 template.universeSelect.items.set(data.items);
             }
         });
     }
+
+    template.autorun(function () {
+        var items = template.universeSelect.items.get();
+        var values = [];
+
+        _.each(items, function (item) {
+            if (item.selected) {
+                values.push(item.value);
+            }
+        });
+
+        template.universeSelect.values.set(values);
+    });
 
     template.autorun(function () {
         var values = template.universeSelect.values.get();
@@ -434,7 +436,7 @@ var _setVisibleByValue = function (value, template) {
     template.universeSelect.items.set(items);
 };
 
-var _getOptionsFromMethod = function (searchText, values, template, callback) {
+var _getOptionsFromMethod = function (searchText, values, template) {
     var optionsMethod = template.data.atts.optionsMethod;
     var optionsMethodParams = template.data.atts.optionsMethodParams;
     var searchVal;
@@ -453,26 +455,34 @@ var _getOptionsFromMethod = function (searchText, values, template, callback) {
 
     Meteor.call(optionsMethod, searchVal, function (err, res) {
         var items = template.universeSelect.items.get() || [];
+        var items_selected = [];
+
+        _.each(items, function (item) {
+            if(values && _.indexOf(values, item.value) !== -1){
+                item.selected = true;
+                items_selected.push(item);
+            } else if(!values && item.selected){
+                items_selected.push(item);
+            }
+        });
 
         _.each(res, function (obj) {
-            if (_.find(items, function (item) {
+            if (_.find(items_selected, function (item) {
                     return item.value === obj.value;
                 })) {
                 return;
             }
 
-            items.push({
+            items_selected.push({
                 label: obj.label,
                 value: obj.value,
-                selected: false,
+                selected: _.indexOf(values, obj.value) !== -1,
                 visible: true
             });
         });
 
-        template.universeSelect.items.set(items);
+        template.universeSelect.items.set(items_selected);
         template.universeSelect.loading.set(false);
         _setVisibleByValue(searchText, template);
-
-        callback && callback(items);
     });
 };
