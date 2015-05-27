@@ -32,19 +32,6 @@ AutoForm.addInputType('universe-select', {
             context.atts.remove_button = '';
         }
 
-        // get autosave value
-        var i = 0;
-
-        while (Template.parentData(i) && !Template.parentData(i)._af) {
-            ++i;
-        }
-
-        if (Template.parentData(i) && Template.parentData(i)._af) {
-            context.autosave = Template.parentData(i)._af.autosave;
-        } else {
-            context.autosave = true;
-        }
-
         return context;
     }
 });
@@ -80,9 +67,7 @@ Template.afUniverseSelect.onRendered(function () {
             });
 
             // fix for non-reactive value if autosave is false
-            if (template.universeSelect.reactive.get() &&
-                (template.data.autosave || (prevVal === undefined || prevVal.length === 0))) {
-
+            if (template.universeSelect.reactive.get()) {
                 template.universeSelect.items.set(data.items);
             }
         });
@@ -335,8 +320,9 @@ var _universeSelectOnBlur = function (e, template) {
     var $select = $(template.find('select'));
     var $selectizeInput = $(template.find('.selectize-input'));
     var $selectizeDropdown = $(template.find('.js-selectize-dropdown'));
+    var values = template.universeSelect.values.get();
 
-
+    $select.val(values);
     $select.change(); //save value on blur
 
     $selectizeDropdown.stop(true, true).hide(500);
@@ -364,18 +350,13 @@ var _saveValues = function (template, values) {
 
     _.each(items, function (item, key) {
         if (_.indexOf(values, item.value.toString()) !== -1) {
-            items[key].selected = true;
+            item.selected = true;
         } else {
-            items[key].selected = false;
+            item.selected = false;
         }
     });
 
     template.universeSelect.items.set(items);
-    template.universeSelect.values.set(values);
-
-    if (!_.isEqual($select.val(), values)) {
-        $select.val(values);
-    }
 };
 
 // from selectize utils https://github.com/brianreavis/selectize.js/blob/master/src/utils.js
@@ -425,11 +406,11 @@ var _transferStyles = function ($from, $to, properties) {
 var _setVisibleByValue = function (value, template) {
     var items = template.universeSelect.items.get();
 
-    _.each(items, function (item, key) {
+    _.each(items, function (item) {
         if (item.label.search(new RegExp(value, 'i')) !== -1) {
-            items[key].visible = true;
+            item.visible = true;
         } else {
-            items[key].visible = false;
+            item.visible = false;
         }
     });
 
