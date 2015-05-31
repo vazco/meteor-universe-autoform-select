@@ -8,6 +8,9 @@ AutoForm.addInputType('universe-select', {
     },
     contextAdjust: function (context) {
         // build items list
+
+        // AutoForm.getCurrentDataForForm()
+
         context.items = _.map(context.selectOptions, function (opt) {
             return {
                 label: opt.label,
