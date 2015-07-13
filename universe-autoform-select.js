@@ -274,7 +274,7 @@ Template.afUniverseSelect.events({
         var items = template.universeSelect.items.get();
         var values = template.universeSelect.values.get();
         var label = $input.val();
-        var value = _.str.slugify(label);
+        var value = getSlug(label);
 
         template.universeSelect.reactive.set(false);
 
