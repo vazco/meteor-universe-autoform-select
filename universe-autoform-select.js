@@ -278,6 +278,16 @@ Template.afUniverseSelect.events({
 
         template.universeSelect.reactive.set(false);
 
+        var _saveCreatedItem = function () {
+            if (template.data.atts.multiple) {
+                values = _.union(values, value);
+            } else {
+                values = value;
+            }
+
+            _saveValues(template, values);
+        };
+
         if (_.indexOf(values, value) === -1) {
             items.push({
                 label: label,
@@ -296,16 +306,6 @@ Template.afUniverseSelect.events({
                 _saveCreatedItem();
             }
         }
-
-        var _saveCreatedItem = function () {
-            if (template.data.atts.multiple) {
-                values = _.union(values, value);
-            } else {
-                values = value;
-            }
-
-            _saveValues(template, values);
-        };
 
         $input.val('');
         $(template.find('.create')).hide();
