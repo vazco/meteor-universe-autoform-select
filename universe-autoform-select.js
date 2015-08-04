@@ -9,8 +9,6 @@ AutoForm.addInputType('universe-select', {
     contextAdjust: function (context) {
         // build items list
 
-        // AutoForm.getCurrentDataForForm()
-
         context.items = _.map(context.selectOptions, function (opt) {
             return {
                 label: opt.label,
@@ -34,6 +32,9 @@ AutoForm.addInputType('universe-select', {
             context.atts.multipleClass = 'single';
             context.atts.remove_button = '';
         }
+
+        //autosave option
+        context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
 
         return context;
     }
@@ -69,8 +70,7 @@ Template.afUniverseSelect.onRendered(function () {
                 item.visible = true;
             });
 
-            // fix for non-reactive value if autosave is false
-            if (template.universeSelect.reactive.get()) {
+            if (template.universeSelect.reactive.get()/* && data.atts.autosave*/) {
                 template.universeSelect.items.set(data.items);
             }
         });
