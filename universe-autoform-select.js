@@ -94,7 +94,9 @@ Template.afUniverseSelect.onRendered(function () {
         var $select = $(template.find('select'));
 
         if (!_.isEqual($select.val(), values)) {
-            $select.val(values);
+            Meteor.setTimeout(function() {
+                $select.val(values);
+            }, 0);
         }
 
         prevVal = values;
@@ -278,6 +280,16 @@ Template.afUniverseSelect.events({
 
         template.universeSelect.reactive.set(false);
 
+        var _saveCreatedItem = function () {
+            if (template.data.atts.multiple) {
+                values = _.union(values, value);
+            } else {
+                values = value;
+            }
+
+            _saveValues(template, values);
+        };
+
         if (_.indexOf(values, value) === -1) {
             items.push({
                 label: label,
@@ -297,16 +309,6 @@ Template.afUniverseSelect.events({
             }
         }
 
-        var _saveCreatedItem = function () {
-            if (template.data.atts.multiple) {
-                values = _.union(values, value);
-            } else {
-                values = value;
-            }
-
-            _saveValues(template, values);
-        };
-
         $input.val('');
         $(template.find('.create')).hide();
         _universeSelectOnBlur(e, template);
@@ -324,7 +326,6 @@ var _universeSelectOnBlur = function (e, template) {
     var $selectizeInput = $(template.find('.selectize-input'));
     var $selectizeDropdown = $(template.find('.js-selectize-dropdown'));
     var values = template.universeSelect.values.get();
-
     $select.val(values);
     $select.change(); //save value on blur
 
@@ -344,7 +345,6 @@ var _universeSelectOnChangedItems = function (template) {
 
 
 var _saveValues = function (template, values) {
-    var $select = $(template.find('select'));
     var items = template.universeSelect.items.get();
 
     if (!_.isArray(values)) {
