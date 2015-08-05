@@ -33,6 +33,10 @@ AutoForm.addInputType('universe-select', {
             context.atts.remove_button = '';
         }
 
+        if (context.atts.createSlug !== false) {
+            context.atts.createSlug = true;
+        }
+
         //autosave option
         context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
 
@@ -276,7 +280,11 @@ Template.afUniverseSelect.events({
         var items = template.universeSelect.items.get();
         var values = template.universeSelect.values.get();
         var label = $input.val();
-        var value = getSlug(label);
+        var value = label;
+
+        if (template.data.atts.createSlug) {
+            value = getSlug(value);
+        }
 
         template.universeSelect.reactive.set(false);
 

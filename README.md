@@ -117,6 +117,12 @@ If you enable autosave option in autoform, then it triggering after blur of univ
         <td valign="top"><code>true</code></td>
     </tr>
     <tr>
+        <td valign="top"><code>createSlug</code></td>
+        <td valign="top"><i>Optional. After creating new label, converts value into a slug.</i> </td>
+        <td valign="top"><code>Boolean</code></td>
+        <td valign="top"><code>true</code></td>
+    </tr>
+    <tr>
         <td valign="top"><code>createMethod</code></td>
         <td valign="top"><i>Optional. Name of method to call after create new item.</i> </td>
         <td valign="top"><code>function (label, value)</code></td>
