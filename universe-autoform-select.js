@@ -268,6 +268,11 @@ Template.afUniverseSelect.events({
 
         _universeSelectOnFocus(template);
     },
+    'change input': function(e) {
+        // prevent non-autoform fields changes from submitting the form when autosave is enabled
+        e.preventDefault();
+        e.stopPropagation();
+    },
     'blur input': function (e, template) {
         var timeoutId = Meteor.setTimeout(function () {
             _universeSelectOnBlur(e, template);
@@ -319,7 +324,9 @@ Template.afUniverseSelect.events({
 
         $input.val('');
         $(template.find('.create')).hide();
-        _universeSelectOnBlur(e, template);
+
+        // We don't have to call _universeSelectOnBlur because 'blur input' is also triggered
+        //_universeSelectOnBlur(e, template);
     }
 });
 
