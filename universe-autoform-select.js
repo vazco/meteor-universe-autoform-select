@@ -83,12 +83,24 @@ Template.afUniverseSelect.onRendered(function () {
     template.autorun(function () {
         var items = template.universeSelect.items.get();
         var values = [];
+        var values_limit = template.data.atts.values_limit;
 
         _.each(items, function (item) {
             if (item.selected) {
                 values.push(item.value);
             }
         });
+
+        if (values_limit !== undefined && values.length > values_limit) {
+            var values_old = template.universeSelect.values.get();
+            _.each(items, function (item) {
+                if (!_.contains(values_old, item.value)) {
+                    item.selected = false;
+                }
+            });
+            template.universeSelect.items.set(items);
+            return;
+        }
 
         template.universeSelect.values.set(values);
     });

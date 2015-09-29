@@ -105,6 +105,12 @@ If you enable autosave option in autoform, then it triggering after blur of univ
         <td valign="top"><code>true</code></td>
     </tr>
     <tr>
+        <td valign="top"><code>values_limit</code></td>
+        <td valign="top"><i>Optional.</i> </td>
+        <td valign="top"><code>Number</code></td>
+        <td valign="top"><code>undefined</code></td>
+    </tr>
+    <tr>
         <td valign="top"><code>create</code></td>
         <td valign="top"><i>Optional. Allows the user to create a new items that aren't in the list of options.</i> </td>
         <td valign="top"><code>Boolean</code></td>
