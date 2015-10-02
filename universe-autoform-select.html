@@ -17,6 +17,12 @@
                         <a href="#" class="remove" tabindex="-1" title="Remove">×</a>
                     {{/if}}
                 </div>
+            {{else}}
+                {{#if getPlaceholder}}
+                    <div class="universe-autoform-select-placeholder">
+                        {{getPlaceholder}}
+                    </div>
+                {{/if}}
             {{/each}}
             <input type="text" autocomplete="off" tabindex="">
         </div>

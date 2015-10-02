@@ -39,6 +39,7 @@ AutoForm.addInputType('universe-select', {
 
         //autosave option
         context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
+        context.atts.placeholder = AutoForm.getCurrentDataForForm().placeholder || null;
 
         return context;
     }
@@ -168,6 +169,9 @@ Template.afUniverseSelect.helpers({
     isLoading: function () {
         var template = Template.instance();
         return template.universeSelect.loading.get();
+    },
+    getPlaceholder: function () {
+        return this.atts.placeholder;
     }
 });
 

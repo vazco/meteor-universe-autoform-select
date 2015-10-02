@@ -28,3 +28,7 @@
     right: 5px;
     z-index: 1000;
 }
+
+.universe-autoform-select-placeholder{
+    color: #bbb;
+}
