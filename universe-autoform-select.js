@@ -40,6 +40,7 @@ AutoForm.addInputType('universe-select', {
         //autosave option
         context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
         context.atts.placeholder = AutoForm.getCurrentDataForForm().placeholder || null;
+        context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || false;
 
         return context;
     }
@@ -172,12 +173,22 @@ Template.afUniverseSelect.helpers({
     },
     getPlaceholder: function () {
         return this.atts.placeholder;
+    },
+    isDisabled: function () {
+        return this.atts.uniDisabled;
     }
 });
+
+var _checkDisabled = function (template) {
+    if (template.data.atts.uniDisabled) {
+        throw new Meteor.Error('This field is disabled');
+    }
+};
 
 Template.afUniverseSelect.events({
     'click .remove': function (e, template) {
         e.preventDefault();
+        _checkDisabled(template);
 
         var $el = $(e.target);
         var val = $el.parent().attr('data-value');
@@ -189,6 +200,7 @@ Template.afUniverseSelect.events({
     },
     'click .selectize-dropdown-content > div:not(.create)': function (e, template) {
         e.preventDefault();
+        _checkDisabled(template);
 
         var $el = $(e.target);
         var val = $el.attr('data-value');
@@ -213,12 +225,16 @@ Template.afUniverseSelect.events({
         }
     },
     'click .selectize-input': function (e, template) {
+        _checkDisabled(template);
+
         var $input = $(template.find('input'));
         $input.focus();
 
         _getOptionsFromMethod($input.val(), null, template);
     },
     'keydown input': function (e, template) {
+        _checkDisabled(template);
+
         var $el = $(e.target);
         var values = template.universeSelect.values.get();
         var width = _measureString($el.val(), $el) + 10;
@@ -260,6 +276,8 @@ Template.afUniverseSelect.events({
         }
     },
     'keyup input': function (e, template) {
+        _checkDisabled(template);
+
         var $el = $(e.target);
         var value = $el.val();
 
@@ -276,6 +294,8 @@ Template.afUniverseSelect.events({
         _getOptionsFromMethod(value, null, template);
     },
     'focus input': function (e, template) {
+        _checkDisabled(template);
+
         var timeoutId = template.universeSelect.blurTimeoutId.get();
 
         if (timeoutId) {
@@ -284,12 +304,16 @@ Template.afUniverseSelect.events({
 
         _universeSelectOnFocus(template);
     },
-    'change input': function(e) {
+    'change input': function(e, template) {
+        _checkDisabled(template);
+
         // prevent non-autoform fields changes from submitting the form when autosave is enabled
         e.preventDefault();
         e.stopPropagation();
     },
     'blur input': function (e, template) {
+        _checkDisabled(template);
+
         var timeoutId = Meteor.setTimeout(function () {
             _universeSelectOnBlur(e, template);
         }, 500);
@@ -297,6 +321,8 @@ Template.afUniverseSelect.events({
         template.universeSelect.blurTimeoutId.set(timeoutId);
     },
     'click .create': function (e, template) {
+        _checkDisabled(template);
+
         var $input = $(template.find('input'));
         var items = template.universeSelect.items.get();
         var values = template.universeSelect.values.get();

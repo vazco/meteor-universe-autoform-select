@@ -93,6 +93,12 @@ If you enable autosave option in autoform, then it triggering after blur of univ
 		<td valign="top"><code>null</code></td>
 	</tr>
 	<tr>
+    		<td valign="top"><code>disabled</code></td>
+    		<td valign="top"><i>Optional.</i></td>
+    		<td valign="top"><code>Boolean</code></td>
+    		<td valign="top"><code>false</code></td>
+    	</tr>
+	<tr>
 		<td valign="top"><code>multiple</code></td>
 		<td valign="top"><i>Optional.</i> </td>
 		<td valign="top"><code>Boolean</code></td>

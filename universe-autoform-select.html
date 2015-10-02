@@ -8,7 +8,7 @@
         </select>
 
 
-        <div class="selectize-input items not-full has-options has-items">
+        <div class="selectize-input items not-full has-options has-items {{#if isDisabled}}universe-autoform-select-disabled{{/if}}">
             {{#each getItemsSelected}}
                 <div data-value={{this.value}} class="item">
                     {{this.label}}
