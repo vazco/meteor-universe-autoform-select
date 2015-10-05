@@ -39,7 +39,7 @@ AutoForm.addInputType('universe-select', {
 
         //autosave option
         context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
-        context.atts.placeholder = AutoForm.getCurrentDataForForm().placeholder || null;
+        context.atts.placeholder = AutoForm.getCurrentDataForForm().placeholder || context.atts.uniPlaceholder || null;
         context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || false;
 
         return context;

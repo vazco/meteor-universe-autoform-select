@@ -87,7 +87,7 @@ If you enable autosave option in autoform, then it triggering after blur of univ
 		<td valign="top"><code>undefined</code></td>
 	</tr>
 	<tr>
-		<td valign="top"><code>placeholder</code></td>
+		<td valign="top"><code>uniPlaceholder</code></td>
 		<td valign="top"><i>Optional.</i> A placeholder option.</td>
 		<td valign="top"><code>String</code></td>
 		<td valign="top"><code>null</code></td>
