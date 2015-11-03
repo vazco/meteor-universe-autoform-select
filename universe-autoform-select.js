@@ -38,9 +38,9 @@ AutoForm.addInputType('universe-select', {
         }
 
         //autosave option
-        context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
-        context.atts.placeholder = AutoForm.getCurrentDataForForm().placeholder || context.atts.uniPlaceholder || null;
-        context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || false;
+        context.atts.autosave = (typeof AutoForm.getCurrentDataForForm === 'function') ? AutoForm.getCurrentDataForForm().autosave : false;
+        context.atts.placeholder = (typeof AutoForm.getCurrentDataForForm === 'function') ? AutoForm.getCurrentDataForForm().placeholder : context.atts.uniPlaceholder || null;
+        context.atts.uniDisabled = (typeof AutoForm.getCurrentDataForForm === 'function') ? !!AutoForm.getCurrentDataForForm().disabled : false;
 
         return context;
     }
