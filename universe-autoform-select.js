@@ -122,11 +122,12 @@ Template.afUniverseSelect.onRendered(function () {
         prevVal = values;
     });
 
-    var formId = AutoForm.getCurrentDataForForm().id;
-    $('#'+formId).bind('reset', function () {
-        _saveValues(template, []);
-    });
-
+    if (AutoForm && typeof AutoForm.getCurrentDataForForm === 'function') {
+        var formId = AutoForm.getCurrentDataForForm().id;
+        $('#' + formId).bind('reset', function () {
+            _saveValues(template, []);
+        });
+    }
 });
 
 
