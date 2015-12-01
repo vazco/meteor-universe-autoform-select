@@ -8,7 +8,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-    api.versionsFrom('1.0.4.2');
+    api.versionsFrom('1.0.4.3');
 
     if(!api.addAssets) {
         api.addAssets = function(files, platform){
