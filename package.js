@@ -17,7 +17,7 @@ Package.onUse(function(api) {
     }
 
     api.use('templating');
-    api.use('aldeed:autoform@5.7.1');
+    api.use('aldeed:autoform@5.8.0');
 
     api.use(['underscore', 'reactive-var'], 'client');
 
