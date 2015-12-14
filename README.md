@@ -34,6 +34,12 @@ In a Meteor app directory, enter:
 $ meteor add vazco:universe-autoform-select
 ```
 
+## For use without autoform
+
+Universe selectize standalone:
+
+https://github.com/vazco/meteor-universe-selectize/
+
 ## Usage
 
 Specify "universe-select" for the `type` attribute of any input. This can be done in a number of ways:
