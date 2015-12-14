@@ -262,7 +262,8 @@
     background: #ffffff;
     cursor: default;
 }
-.selectize-dropdown .active {
+.selectize-dropdown .active,
+.selectize-dropdown .selectize-dropdown-content > :hover {
     background-color: #f5fafd;
     color: #495c68;
 }
