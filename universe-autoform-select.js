@@ -196,6 +196,8 @@ Template.afUniverseSelect.events({
                 break;
 
             case 13: // enter
+                e.preventDefault();
+                
                 if($input.val() === ''){
                     break;
                 }
