@@ -20,12 +20,14 @@
     "node": true,
     "browser": true,
     "jquery": true,
+    "esnext": true,
     "globals": {
         "ReactiveVar": false,
         "AutoForm": false,
         "Meteor": false,
         "Template": false,
         "_": false,
-        "Package": false
+        "Package": false,
+        "getSlug": false
     }
 }
