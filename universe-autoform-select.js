@@ -170,6 +170,8 @@ Template.afUniverseSelect.events({
         }else{
             $(template.find('.js-selectize-dropdown')).stop(true, true).hide();
         }
+        $(e.currentTarget).closest('.universe-autoform-select').find('input').val('');
+        $(template.find('.js-selectize-dropdown')).stop(true, true).show();
     },
     'click .selectize-input': function (e, template) {
         $(template.find('input')).focus();
@@ -197,7 +199,7 @@ Template.afUniverseSelect.events({
 
             case 13: // enter
                 e.preventDefault();
-                
+
                 if($input.val() === ''){
                     break;
                 }
