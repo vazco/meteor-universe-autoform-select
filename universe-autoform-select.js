@@ -175,7 +175,7 @@ universeSelect.prototype.getOptionsFromMethod = function (searchText, values, te
     searchVal = {
         searchText: searchText,
         values: values || [],
-        params: optionsMethodParams || null
+        params: (_.isFunction(optionsMethodParams) ? optionsMethodParams() : optionsMethodParams) || null
     };
 
     template.universeSelect.loading.set(true);
