@@ -151,7 +151,7 @@ If you enable autosave option in autoform, then it triggering after blur of univ
     <tr>
         <td valign="top"><code>optionsMethod</code></td>
         <td valign="top"><i>Optional. Name of method to get more items. Method should return array of options.</i> </td>
-        <td valign="top"><code>function (query)</code></td>
+        <td valign="top"><code>String</code></td>
         <td valign="top"><code>undefined</code></td>
     </tr>
     <tr>
