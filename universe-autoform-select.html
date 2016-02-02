@@ -1,4 +1,24 @@
 <template name="afUniverseSelect">
+    {{> universeSelectize
+            id                  = atts.id
+            name                = atts.name
+            value               = value
+            create              = atts.create
+            options             = items
+            multiple            = atts.multiple
+            disabled            = atts.uniDisabled
+            createSlug          = atts.createSlug
+            placeholder         = atts.placeholder
+            createMethod        = atts.createMethod
+            removeButton        = atts.remove_button
+            dataSchemaKey       = atts.dataSchemaKey
+            optionsMethod       = atts.optionsMethod
+            optionsMethodParams = atts.optionsMethodParams
+    }}
+
+
+
+    {{!--
     <div class="selectize-control universe-autoform-select {{atts.multipleClass}} {{atts.remove_button}} {{#if isLoading}}loading{{/if}}">
 
         <select {{atts}}>
@@ -43,4 +63,5 @@
             </div>
         </div>
     </div>
+    --}}
 </template>

@@ -17,25 +17,7 @@ AutoForm.addInputType('universe-select', {
             };
         });
 
-        // remove_button option
-        if (context.atts.remove_button === false) {
-            context.atts.remove_button = '';
-        } else {
-            context.atts.remove_button = 'plugin-remove_button';
-        }
-
-        // multiple option
-        if (context.atts.multiple) {
-            context.atts.multipleClass = 'multi';
-        } else {
-            context.atts.multiple = undefined;
-            context.atts.multipleClass = 'single';
-            context.atts.remove_button = '';
-        }
-
-        if (context.atts.createSlug !== false) {
-            context.atts.createSlug = true;
-        }
+        //console.log('aaaa', context);
 
         //autosave option
         if (AutoForm && typeof AutoForm.getCurrentDataForForm === 'function') {
@@ -44,9 +26,13 @@ AutoForm.addInputType('universe-select', {
             context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || false;
         }
 
+        context.atts.dataSchemaKey = context.atts['data-schema-key'];
+
         return context;
     }
 });
+
+/*
 
 var universeSelect = function (options) {
     this.items         = new ReactiveVar();
@@ -254,7 +240,7 @@ Template.afUniverseSelect.onRendered(function () {
                 item.visible = true;
             });
 
-            if (template.universeSelect.reactive.get()/* && data.atts.autosave*/) {
+            if (template.universeSelect.reactive.get()) { // && data.atts.autosave
                 template.universeSelect.items.set(data.items);
             }
         });
@@ -540,3 +526,4 @@ Template.afUniverseSelect.events({
         //template.universeSelect.selectOnBlur(e, template);
     }
 });
+*/

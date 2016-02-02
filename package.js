@@ -8,8 +8,6 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
-    api.versionsFrom('1.2.1');
-
     if (!api.addAssets) {
         api.addAssets = function (files, platform) {
             api.addFiles(files, platform, {isAsset: true});
@@ -17,9 +15,9 @@ Package.onUse(function (api) {
     }
 
     api.use('ecmascript');
-    api.use('less');
     api.use('templating');
-    api.use('aldeed:autoform@5.8.0');
+    api.use('aldeed:autoform@5.8.1');
+    api.use('vazco:universe-selectize@0.1.3');
 
     api.use(['underscore', 'reactive-var'], 'client');
 
@@ -28,8 +26,6 @@ Package.onUse(function (api) {
     api.addFiles([
         'universe-autoform-select.html',
         'universe-autoform-select.js',
-        'stylesheets/selectize.default.less',
-        'stylesheets/universe-autoform-select.less'
     ], 'client');
 
     api.addAssets('img/loading.gif', 'client');
