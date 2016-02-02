@@ -26,6 +26,8 @@ AutoForm.addInputType('universe-select', {
             context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || false;
         }
 
+        context.atts.removeButton = context.atts.removeButton || context.atts.remove_button; // support for previous version
+
         context.atts.dataSchemaKey = context.atts['data-schema-key'];
 
         return context;
