@@ -8,6 +8,8 @@ Package.describe({
 });
 
 Package.onUse(function (api) {
+    api.versionsFrom('1.2.1');
+
     if (!api.addAssets) {
         api.addAssets = function (files, platform) {
             api.addFiles(files, platform, {isAsset: true});
