@@ -18,8 +18,8 @@ Package.onUse(function (api) {
 
     api.use('ecmascript');
     api.use('templating');
-    api.use('aldeed:autoform');
-    api.use('vazco:universe-selectize');
+    api.use('aldeed:autoform@5.8.1');
+    api.use('vazco:universe-selectize@0.1.6');
 
     api.use(['underscore', 'reactive-var'], 'client');
 
