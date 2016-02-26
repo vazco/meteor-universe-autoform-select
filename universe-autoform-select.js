@@ -23,7 +23,7 @@ AutoForm.addInputType('universe-select', {
         if (AutoForm && typeof AutoForm.getCurrentDataForForm === 'function') {
             context.atts.autosave = AutoForm.getCurrentDataForForm().autosave || false;
             context.atts.placeholder = AutoForm.getCurrentDataForForm().placeholder || context.atts.uniPlaceholder || null;
-            context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || false;
+            context.atts.uniDisabled = !!AutoForm.getCurrentDataForForm().disabled || context.atts.uniDisabled || false;
         }
 
         context.atts.removeButton = context.atts.removeButton || context.atts.remove_button; // support for previous version
