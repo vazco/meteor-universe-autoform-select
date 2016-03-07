@@ -1,67 +1,19 @@
 <template name="afUniverseSelect">
     {{> universeSelectize
-            id                  = atts.id
-            name                = atts.name
-            value               = value
-            create              = atts.create
-            options             = items
-            multiple            = atts.multiple
-            disabled            = atts.uniDisabled
-            createSlug          = atts.createSlug
-            placeholder         = atts.placeholder
-            createMethod        = atts.createMethod
-            removeButton        = atts.removeButton
-            dataSchemaKey       = atts.dataSchemaKey
-            optionsMethod       = atts.optionsMethod
-            optionsMethodParams = atts.optionsMethodParams
+            id                   = atts.id
+            name                 = atts.name
+            value                = value
+            create               = atts.create
+            options              = items
+            multiple             = atts.multiple
+            disabled             = atts.uniDisabled
+            createSlug           = atts.createSlug
+            placeholder          = atts.placeholder
+            createMethod         = atts.createMethod
+            removeButton         = atts.removeButton
+            dataSchemaKey        = atts.dataSchemaKey
+            optionsMethod        = atts.optionsMethod
+            optionsPlaceholder   = atts.optionsPlaceholder
+            optionsMethodParams  = atts.optionsMethodParams
     }}
-
-
-
-    {{!--
-    <div class="selectize-control universe-autoform-select {{atts.multipleClass}} {{atts.remove_button}} {{#if isLoading}}loading{{/if}}">
-
-        <select {{atts}}>
-            {{#each getItems}}
-                <option {{optionAtts}}>{{label}}</option>
-            {{/each}}
-        </select>
-
-
-        <div class="selectize-input items not-full has-options has-items {{#if isDisabled}}universe-autoform-select-disabled{{/if}}">
-            {{#each getItemsSelected}}
-                <div data-value={{this.value}} class="item">
-                    {{this.label}}
-
-                    {{#if ../atts.remove_button}}
-                        <a href="#" class="remove" tabindex="-1" title="Remove">×</a>
-                    {{/if}}
-                </div>
-            {{else}}
-                {{#if getPlaceholder}}
-                    <div class="universe-autoform-select-placeholder">
-                        {{getPlaceholder}}
-                    </div>
-                {{/if}}
-            {{/each}}
-            <input type="text" autocomplete="off" tabindex="">
-        </div>
-
-
-        <div class="selectize-dropdown js-selectize-dropdown" style="display:none;">
-            <div class="selectize-dropdown-content">
-                {{#each getItemsUnselected}}
-                    <div data-value={{this.value}} data-selectable class="option">
-                        {{this.label}}
-                    </div>
-                {{/each}}
-                {{#if atts.create}}
-                    <div data-selectable="" class="create" style="display:none;">
-                        Add <strong></strong>…
-                    </div>
-                {{/if}}
-            </div>
-        </div>
-    </div>
-    --}}
 </template>
