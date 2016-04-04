@@ -3,7 +3,7 @@
 Package.describe({
     name: 'vazco:universe-autoform-select',
     summary: 'Custom "afUniverseSelect" input type for AutoForm, with the appearance as selectize',
-    version: '0.3.5',
+    version: '0.3.6',
     git: 'https://github.com/vazco/meteor-universe-autoform-select.git'
 });
 
@@ -19,7 +19,7 @@ Package.onUse(function (api) {
     api.use('ecmascript');
     api.use('templating');
     api.use('aldeed:autoform@5.8.1');
-    api.use('vazco:universe-selectize@0.1.11');
+    api.use('vazco:universe-selectize@0.1.13');
 
     api.use(['underscore'], 'client');
 
