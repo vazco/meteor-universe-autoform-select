@@ -11,9 +11,9 @@ maintained by [Vazco](http://www.vazco.eu).
 > It works standalone, but you can get max out of it when using the whole system.
 
 ## Demo
-http://universe-autoform-select-demo.meteor.com
-
+<a href="https://github.com/vazco/meteor-universe-autoform-select-demo.git">
 https://github.com/vazco/meteor-universe-autoform-select-demo.git
+</a>
 
 
 ## Prerequisites
@@ -38,7 +38,10 @@ $ meteor add vazco:universe-autoform-select
 
 Universe selectize standalone:
 
+<a href="https://github.com/vazco/meteor-universe-selectize/">
 https://github.com/vazco/meteor-universe-selectize/
+</a>
+
 
 ## Usage
 
