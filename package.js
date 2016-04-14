@@ -19,7 +19,7 @@ Package.onUse(function (api) {
     api.use('ecmascript');
     api.use('templating');
     api.use('aldeed:autoform@5.8.1');
-    api.use('vazco:universe-selectize@0.1.13');
+    api.use('vazco:universe-selectize@0.1.14');
 
     api.use(['underscore'], 'client');
 
