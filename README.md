@@ -11,6 +11,11 @@ maintained by [Vazco](http://www.vazco.eu).
 > It works standalone, but you can get max out of it when using the whole system.
 
 ## Demo
+
+<a href="http://universe-autoform-select.stg.vazco.eu/">
+http://universe-autoform-select.stg.vazco.eu/
+</a>
+
 <a href="https://github.com/vazco/meteor-universe-autoform-select-demo.git">
 https://github.com/vazco/meteor-universe-autoform-select-demo.git
 </a>
