@@ -15,8 +15,7 @@ maintained by [Vazco](http://www.vazco.eu).
 <a href="http://universe-autoform-select.stg.vazco.eu/">
 http://universe-autoform-select.stg.vazco.eu/
 </a>
-
-
+<br />
 <a href="https://github.com/vazco/meteor-universe-autoform-select-demo.git">
 https://github.com/vazco/meteor-universe-autoform-select-demo.git
 </a>
