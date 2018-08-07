@@ -1,9 +1,14 @@
-Universe autoform select
-=========================
+<h1 align="center">
+    <a href="https://github.com/vazco">vazco</a>/Universe Autoform Select
+</h1>
+
+&nbsp;
+
+<a href="http://vazco.eu" target="_blank"><img src="https://vazco.eu/universe-banner.png" /></a>
+
+&nbsp;
 
 An add-on Meteor package for [aldeed:autoform](https://github.com/aldeed/meteor-autoform). Provides a single custom input type, "universe-select".
-
-<a href="http://vazco.eu"><img src="https://vazco.eu/universe-banner.png" /></a>
 
 > This package is part of Universe, a framework based on [Meteor platform](http://meteor.com)
 maintained by [Vazco](http://www.vazco.eu).
@@ -195,3 +200,9 @@ Meteor.methods({
     }
 });
 ```
+
+## License
+
+<img src="https://vazco.eu/banner.png" align="right">
+
+**Like every package maintained by [Vazco](https://vazco.eu/), Universe Autoform Select is [MIT licensed](https://github.com/vazco/uniforms/blob/master/LICENSE).**
